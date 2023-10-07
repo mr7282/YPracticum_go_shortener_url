@@ -42,8 +42,9 @@ func webhook(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if keyTrue != "" {
-				w.Header().Add("Location", keyTrue)
-				w.WriteHeader(http.StatusTemporaryRedirect)
+				fmt.Println(keyTrue)
+				w.Header().Set("Location", keyTrue)
+				w.Header().Set("Status", fmt.Sprint(http.StatusTemporaryRedirect))
 				return
 			}
 			w.WriteHeader(http.StatusBadRequest)
@@ -75,11 +76,11 @@ func webhook(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("Key: [%s], Value: %s \n\r", key, value)
 		}
 	
-		w.Header().Set("content-Type", "text/plain")
+		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusCreated)
 	
-		if _, err := w.Write([]byte("http://" + r.Host + "/" +
-			valueShortURL)); err != nil {
+		if _, err := w.Write([]byte("http://" + r.Host + 
+		valueShortURL)); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		return
