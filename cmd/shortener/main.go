@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"math/rand"
 	"net/http"
@@ -35,16 +34,14 @@ func webhook(w http.ResponseWriter, r *http.Request) {
 		if r.RequestURI != "/" {
 
 			for key, value := range shortsURLs {
-				fmt.Println(key, value, r.RequestURI)
 				if value == r.RequestURI {
 					keyTrue = key
 				}
 			}
 
 			if keyTrue != "" {
-				fmt.Println(keyTrue)
 				w.Header().Set("Location", keyTrue)
-				w.Header().Set("Status", fmt.Sprint(http.StatusTemporaryRedirect))
+				w.WriteHeader(http.StatusTemporaryRedirect)
 				return
 			}
 			w.WriteHeader(http.StatusBadRequest)
@@ -70,11 +67,6 @@ func webhook(w http.ResponseWriter, r *http.Request) {
 		}
 	
 		valueShortURL := shortsURLs[string(bodyReq)]
-	
-		// This iteration of testing.
-		for key, value := range shortsURLs {
-			fmt.Printf("Key: [%s], Value: %s \n\r", key, value)
-		}
 	
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusCreated)
