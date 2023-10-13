@@ -94,6 +94,6 @@ func main() {
 	})
 
 	if err := run(r); err != nil {
-		fmt.Errorf("The server did not start because %v\n", err)
+		fmt.Printf("The server did not start because %v\n", err)
 	}
 }
