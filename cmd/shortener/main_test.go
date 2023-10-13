@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_webhook(t *testing.T) {
+func Test_webhookPost(t *testing.T) {
 
 	type want struct {
 		code        int
@@ -42,7 +42,7 @@ func Test_webhook(t *testing.T) {
 
 			reqPost := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(tt.body))
 			recPost := httptest.NewRecorder()
-			webhook(recPost, reqPost)
+			webhookPost(recPost, reqPost)
 
 			res := recPost.Result()
 			assert.Equal(t, tt.want.code, res.StatusCode)
