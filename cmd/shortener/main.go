@@ -35,7 +35,13 @@ func webhookPost(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusCreated)
 
-		if _, err := w.Write([]byte("http://" + *config.BaseAddr +
+		host := r.Host
+		if config.BaseAddr != nil {
+			host = *config.BaseAddr
+		}
+
+
+		if _, err := w.Write([]byte("http://" + host +
 			valueShortURL)); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
@@ -88,6 +94,7 @@ func run(r *chi.Mux) error {
 
 func main() {
 	config.ParseFlag()
+	fmt.Println(*config.ServAddr, *config.BaseAddr)
 	r := chi.NewRouter()
 
 	r.Route("/", func(r chi.Router) {
