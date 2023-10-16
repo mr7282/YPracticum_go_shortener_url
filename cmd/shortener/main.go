@@ -35,13 +35,13 @@ func webhookPost(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusCreated)
 
-		host := r.Host
+		host := "http://" + r.Host
 		if config.BaseAddr != nil {
 			host = *config.BaseAddr
 		}
 
 
-		if _, err := w.Write([]byte("http://" + host +
+		if _, err := w.Write([]byte(host +
 			valueShortURL)); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
