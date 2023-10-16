@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/mr7282/YPracticum_go_shortener_url.git/internal/config"
 )
 
 var shortsURLs = make(map[string]string)
@@ -34,7 +35,7 @@ func webhookPost(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusCreated)
 
-		if _, err := w.Write([]byte("http://" + r.Host +
+		if _, err := w.Write([]byte("http://" + *config.BaseAddr +
 			valueShortURL)); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
@@ -82,10 +83,11 @@ func generatorRandomShortString(length int) string {
 
 // run initializing server dependencies before startup
 func run(r *chi.Mux) error {
-	return http.ListenAndServe(":8080", r)
+	return http.ListenAndServe(*config.ServAddr, r)
 }
 
 func main() {
+	config.ParseFlag()
 	r := chi.NewRouter()
 
 	r.Route("/", func(r chi.Router) {
